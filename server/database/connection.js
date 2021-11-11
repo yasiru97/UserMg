@@ -1,13 +1,12 @@
 const mongoose = require('mongoose');
 
+let mongoUriK8 =`mongodb://${process.env.MONGO_URI}/usermg`
 const connectDB = async () => {
     try{
         // mongodb connection string
-        const con = await mongoose.connect(process.env.MONGO_URI, {
+        const con = await mongoose.connect(mongoUriK8, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            useFindAndModify: false,
-            useCreateIndex: true
         })
 
         console.log(`MongoDB connected : ${con.connection.host}`);

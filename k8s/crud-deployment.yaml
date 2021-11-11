@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crud-deployment
+  labels:
+    app: crud
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crud
+  template:
+    metadata:
+      labels:
+        app: crud
+    spec:
+      containers:
+      - name: crud-app
+        image: aksdemosample1.azurecr.io/crud:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: MONGO_URI
+          valueFrom:
+              configMapKeyRef:
+                name: mongo-config
+                key: MONGO_URI   
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: crud-service
+spec:
+  type: ClusterIP
+  selector:
+    app: crud
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
